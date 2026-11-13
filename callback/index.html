@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Callback otorisasi</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin: 0; padding: 40px 20px; background: #000; color: #EDE6D6;
+           font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 70ch; margin: 0 auto; }
+    h1 { font-size: 22px; }
+    code, textarea { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    textarea { width: 100%; min-height: 3.5em; background: #111; color: #7fe3ff;
+               border: 1px solid #333; border-radius: 6px; padding: 10px; resize: vertical; }
+    .box { border: 1px solid #333; border-radius: 8px; padding: 16px; margin: 20px 0; }
+    .warn { color: #ffb3a7; }
+    small { color: #9b9384; }
+    a { color: #7fe3ff; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Callback otorisasi</h1>
+  <p id="state">Membaca parameter…</p>
+
+  <div class="box" id="ok" hidden>
+    <p>Salin nilai di bawah, lalu tempel ke terminal.</p>
+    <label for="code"><small>code</small></label>
+    <textarea id="code" readonly></textarea>
+    <p><small>Nilai ini sekali pakai. Jangan dibagikan.</small></p>
+  </div>
+
+  <div class="box" id="err" hidden>
+    <p class="warn" id="errmsg"></p>
+    <p><small>Buka ulang tautan otorisasi dari terminal.</small></p>
+  </div>
+
+  <p><small>Halaman statis. Tidak ada skrip pelacak, tidak ada data yang dikirim ke mana pun.</small></p>
+</main>
+<script>
+  const q = new URLSearchParams(location.search);
+  const code = q.get("code");
+  const err = q.get("error") || q.get("error_description");
+  if (code) {
+    document.getElementById("state").textContent = "Otorisasi diterima.";
+    document.getElementById("code").value = code;
+    document.getElementById("ok").hidden = false;
+  } else {
+    document.getElementById("state").textContent = "Tidak ada kode pada tautan ini.";
+    document.getElementById("errmsg").textContent = err ? "Platform mengembalikan: " + err : "Parameter code tidak ditemukan.";
+    document.getElementById("err").hidden = false;
+  }
+</script>
+</body>
+</html>
